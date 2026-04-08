@@ -67,12 +67,12 @@ const translations = {
     }
 };
 
-let currentLang = localStorage.getItem('lang') || 'en';
-let currentTheme = localStorage.getItem('theme') || 'light';
+let currentLang = sessionStorage.getItem('lang') || 'es';
+let currentTheme = sessionStorage.getItem('theme') || 'light';
 
 function setLanguage(lang) {
     currentLang = lang;
-    localStorage.setItem('lang', lang);
+    sessionStorage.setItem('lang', lang);
     
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -87,7 +87,7 @@ function setLanguage(lang) {
 
 function setTheme(theme) {
     currentTheme = theme;
-    localStorage.setItem('theme', theme);
+    sessionStorage.setItem('theme', theme);
     
     if (theme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
