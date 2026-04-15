@@ -109,7 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     themeToggle?.addEventListener('click', () => {
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        setTheme(newTheme);
+
+        const switchTheme = () => setTheme(newTheme);
+
+        if (!document.startViewTransition) {
+            switchTheme();
+        } else {
+            document.startViewTransition(switchTheme);
+        }
     });
 
     langSelect?.addEventListener('change', (e) => {

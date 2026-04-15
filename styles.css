@@ -50,6 +50,32 @@
     --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
+::view-transition-group(root) {
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+::view-transition-new(root) {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="blur"><feGaussianBlur stdDeviation="2"/></filter></defs><circle cx="10" cy="10" r="18" fill="white" filter="url(%23blur)"/></svg>') top left / 0 no-repeat;
+    mask-origin: content-box;
+    animation: scale 1s;
+    animation-fill-mode: both;
+}
+
+::view-transition-old(root),
+[data-theme="dark"]::view-transition-old(root) {
+    animation: scale 1s;
+    animation-fill-mode: both;
+    transform-origin: top left;
+    z-index: -1;
+}
+
+@keyframes scale {
+    to {
+        mask-size: 450vmax;
+    }
+}
+
+
 *,
 *::before,
 *::after {
@@ -712,6 +738,7 @@ ul {
         opacity: 0;
         visibility: hidden;
         transition: all var(--transition-base);
+        z-index: 1000;
     }
     
     .nav-menu.active {
@@ -722,6 +749,7 @@ ul {
     
     .nav-toggle {
         display: flex;
+        z-index: 1001;
     }
     
     .nav-toggle.active span:nth-child(1) {
