@@ -5,12 +5,12 @@ const translations = {
         'nav.projects': 'Projects',
         'nav.contact': 'Contact',
         'hero.greeting': "Hello, I'm",
-        'hero.title': 'Full Stack Web Developer',
+        'hero.title': 'Full Stack Developer',
         'hero.description': 'Passionate about building modern web applications for businesses and individuals.',
         'hero.github': 'GitHub',
         'hero.linkedin': 'LinkedIn',
         'about.title': 'About Me',
-        'about.p1': `I'm a Full Stack Web Developer based in Mexico, specializing in building modern web applications with Angular, Node.js and .NET. Currently working at <strong>Neoris</strong>, I focus on creating responsive, user-friendly interfaces and robust backend solutions.`,
+        'about.p1': `I'm a Full Stack Developer based in Mexico with 6+ years of experience, specializing in building modern web applications with Angular, Node.js and .NET. I focus on creating responsive, user-friendly interfaces and robust backend solutions.`,
         'about.p2': 'With experience in both frontend and backend development, I enjoy tackling challenging projects that require creative problem-solving. I\'m particularly interested in real-time applications and emerging web technologies.',
         'about.p3': "When I'm not coding, you'll find me exploring new technologies, contributing to open source, or working on personal projects to sharpen my skills.",
         'about.location': 'Location',
@@ -38,12 +38,12 @@ const translations = {
         'nav.projects': 'Proyectos',
         'nav.contact': 'Contacto',
         'hero.greeting': 'Hola, soy',
-        'hero.title': 'Desarrollador Web Full Stack',
+        'hero.title': 'Desarrollador Full Stack',
         'hero.description': 'Apasionado por construir aplicaciones web modernas con las últimas tecnologías.',
         'hero.github': 'GitHub',
         'hero.linkedin': 'LinkedIn',
         'about.title': 'Acerca de Mí',
-        'about.p1': `Soy un Desarrollador Web Full Stack radicado en México, especializado en construir aplicaciones web modernas con Angular, Node.js y .NET. Actualmente trabajo en <strong>Neoris</strong>, me enfoco en crear interfaces responsivas, fáciles de usar y soluciones robustas de backend.`,
+        'about.p1': `Soy un Desarrollador Full Stack radicado en México con más de 6 años de experiencia, especializado en construir aplicaciones web modernas con Angular, Node.js y .NET. Me enfoco en crear interfaces responsivas, fáciles de usar y soluciones robustas de backend.`,
         'about.p2': 'Con experiencia en desarrollo frontend y backend, disfruto enfrentar proyectos desafiantes que requieren pensamiento creativo. Estoy particularmente interesado en aplicaciones en tiempo real y tecnologías web emergentes.',
         'about.p3': 'Cuando no estoy programando, me encontrarás explorando nuevas tecnologías, contribuyendo a código abierto, o trabajando en proyectos personales para mejorar mis habilidades.',
         'about.location': 'Ubicación',
@@ -73,14 +73,14 @@ let currentTheme = sessionStorage.getItem('theme') || 'light';
 function setLanguage(lang) {
     currentLang = lang;
     sessionStorage.setItem('lang', lang);
-    
+
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (translations[lang] && translations[lang][key]) {
             el.innerHTML = translations[lang][key];
         }
     });
-    
+
     document.getElementById('lang-select').value = lang;
     document.documentElement.lang = lang;
 }
@@ -88,7 +88,7 @@ function setLanguage(lang) {
 function setTheme(theme) {
     currentTheme = theme;
     sessionStorage.setItem('theme', theme);
-    
+
     if (theme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
     } else {
@@ -141,13 +141,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const handleScroll = () => {
         const currentScrollY = window.scrollY;
-        
+
         if (currentScrollY > 100) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
         }
-        
+
         lastScrollY = currentScrollY;
     };
 
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const targetId = anchor.getAttribute('href');
             const targetElement = document.querySelector(targetId);
-            
+
             if (targetElement) {
                 const headerHeight = header.offsetHeight;
                 const elementPosition = targetElement.getBoundingClientRect().top;
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const projectsGrid = document.querySelector('.projects-grid');
-    
+
     if (projectsGrid) {
         const handleMouseMove = (e) => {
             const cards = document.querySelectorAll('.project-card');
@@ -216,13 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
-                
+
                 if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
                     const rotateX = (y - centerY) / 20;
                     const rotateY = (centerX - x) / 20;
-                    
+
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
                 }
             });
