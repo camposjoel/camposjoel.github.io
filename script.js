@@ -157,6 +157,59 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Scrollspy: sync aria-current when CSS :target-current is supported
+    if (CSS.supports('scroll-target-group: auto')) {
+        const syncAriaCurrent = () => {
+            const currentLink = document.querySelector('.nav__menu a:target-current');
+            document.querySelectorAll('.nav__menu a').forEach(link => {
+                link.setAttribute('aria-current', link === currentLink ? 'true' : 'false');
+            });
+        };
+        syncAriaCurrent();
+        document.addEventListener('scrollend', syncAriaCurrent);
+    } else {
+        // IntersectionObserver fallback for browsers without scroll-target-group
+        const navLinks = document.querySelectorAll('.nav__menu a');
+        const sections = document.querySelectorAll('section[id], footer[id]');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        const isActive = link.getAttribute('href') === `#${id}`;
+                        link.classList.toggle('target-current', isActive);
+                        link.setAttribute('aria-current', isActive ? 'true' : 'false');
+                    });
+                }
+            });
+        }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+
+        sections.forEach(section => observer.observe(section));
+    }
+
+    // Scroll-driven reveals fallback for browsers without animation-timeline support
+    if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)') &&
+        matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+        const revealElements = document.querySelectorAll('.section--reveal > .wrap, .closing--reveal > .wrap');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(24px)';
+            el.style.transition = 'opacity 600ms ease, transform 600ms ease';
+            revealObserver.observe(el);
+        });
+    }
+
     // Print styles
     const printStyles = document.createElement('style');
     printStyles.textContent = `

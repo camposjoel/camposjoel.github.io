@@ -12,6 +12,9 @@
    ============================================================ */
 
 :root {
+  /* MANDATORY: Automatically adapt native UI to user system preferences */
+  color-scheme: light dark;
+
   /* Grounds */
   --g-main: #0c0c0c;
   --g-alt: #141414;
@@ -25,6 +28,11 @@
   /* Accent */
   --action: #3b82f6;
   --action-hover: #2563eb;
+
+  /* Scrollbar colors — adapt to color scheme */
+  --color-scrollbar-thumb: light-dark(#6b6b6b, #8a8a8a);
+  --color-scrollbar-track: light-dark(#eee, #222);
+  scrollbar-color: var(--color-scrollbar-thumb) var(--color-scrollbar-track);
 
   /* Hairline */
   --bar: 1px solid rgba(255, 255, 255, 0.08);
@@ -92,6 +100,7 @@
 
 html {
   scroll-behavior: auto;
+  accent-color: var(--action);
 }
 
 body {
@@ -217,6 +226,8 @@ ul {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  /* Enables automatic tracking of fragment links (scrollspy) */
+  scroll-target-group: auto;
 }
 
 .nav__link {
@@ -243,6 +254,15 @@ ul {
 }
 
 .nav__link:hover::after {
+  width: 100%;
+}
+
+/* Scrollspy active state — :target-current for modern browsers, .target-current for fallback */
+.nav__link:is(:target-current, .target-current) {
+  color: var(--ink);
+}
+
+.nav__link:is(:target-current, .target-current)::after {
   width: 100%;
 }
 
@@ -948,6 +968,17 @@ ul {
     visibility: visible;
   }
 
+  /* Animate display transition for mobile nav */
+  .nav__menu {
+    transition:
+      transform var(--m-in) var(--ease),
+      opacity var(--m-in) var(--ease),
+      display,
+      overlay;
+    transition-duration: var(--m-in);
+    transition-behavior: allow-discrete;
+  }
+
   .nav__toggle {
     display: flex;
   }
@@ -1118,18 +1149,32 @@ ul {
 }
 
 /* ============================================================
+   SCROLL-DRIVEN SECTION REVEALS
+   ============================================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports ((animation-timeline: view()) and (animation-range: entry)) {
+    @keyframes section-reveal {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+    }
+
+    .section--reveal > .wrap,
+    .closing--reveal > .wrap {
+      animation: section-reveal auto linear backwards;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+
+/* ============================================================
    REDUCED MOTION
    ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-
   .m-enter .hero__name,
   .m-enter .hero__lead,
   .m-enter .hero__desc,
